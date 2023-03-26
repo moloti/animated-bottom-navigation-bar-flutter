@@ -292,7 +292,7 @@ class AnimatedBottomNavigationBar extends StatefulWidget {
 
 class _AnimatedBottomNavigationBarState
     extends State<AnimatedBottomNavigationBar> with TickerProviderStateMixin {
-  late ValueListenable<ScaffoldGeometry> geometryListenable;
+  // late ValueListenable<ScaffoldGeometry> geometryListenable;
 
   late AnimationController _bubbleController;
 
@@ -302,7 +302,7 @@ class _AnimatedBottomNavigationBarState
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    geometryListenable = Scaffold.geometryOf(context);
+    // geometryListenable = Scaffold.geometryOf(context);
 
     widget.notchAndCornersAnimation?..addListener(() => setState(() {}));
   }
