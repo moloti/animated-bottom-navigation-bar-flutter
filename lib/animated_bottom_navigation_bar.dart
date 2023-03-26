@@ -27,7 +27,7 @@ class AnimatedBottomNavigationBar extends StatefulWidget {
   final int? itemCount;
 
   /// Icon data to render in the tab bar.
-  final List<IconData>? icons;
+  final List<NavigationRailDestination>? tabs;
 
   /// Handler which is passed every updated active index.
   final Function(int) onTap;
@@ -123,7 +123,7 @@ class AnimatedBottomNavigationBar extends StatefulWidget {
     required this.onTap,
     this.tabBuilder,
     this.itemCount,
-    this.icons,
+    this.tabs,
     this.height,
     this.splashRadius = _defaultSplashRadius,
     this.splashSpeedInMilliseconds,
@@ -148,10 +148,10 @@ class AnimatedBottomNavigationBar extends StatefulWidget {
     this.hideAnimationController,
     this.backgroundGradient,
     this.blurEffect = false,
-  })  : assert(icons != null || itemCount != null),
+  })  : assert(tabs != null || itemCount != null),
         assert(
-          ((itemCount ?? icons!.length) >= 2) &&
-              ((itemCount ?? icons!.length) <= 5),
+          ((itemCount ?? tabs!.length) >= 2) &&
+              ((itemCount ?? tabs!.length) <= 5),
         ),
         super(key: key) {
     if (gapLocation == GapLocation.end) {
@@ -161,7 +161,7 @@ class AnimatedBottomNavigationBar extends StatefulWidget {
             'consider set rightCornerRadius to 0.');
     }
     if (gapLocation == GapLocation.center) {
-      final iconsCountIsOdd = (itemCount ?? icons!.length).isOdd;
+      final iconsCountIsOdd = (itemCount ?? tabs!.length).isOdd;
       if (iconsCountIsOdd)
         throw NonAppropriatePathException(
             'Odd count of icons along with $gapLocation causes render issue => '
@@ -171,7 +171,7 @@ class AnimatedBottomNavigationBar extends StatefulWidget {
 
   AnimatedBottomNavigationBar({
     Key? key,
-    required List<IconData> icons,
+    required List<NavigationRailDestination> tabs,
     required int activeIndex,
     required Function(int) onTap,
     double? height,
@@ -200,7 +200,7 @@ class AnimatedBottomNavigationBar extends StatefulWidget {
     bool blurEffect = false,
   }) : this._internal(
           key: key,
-          icons: icons,
+          tabs: tabs,
           activeIndex: activeIndex,
           onTap: onTap,
           height: height,
@@ -358,7 +358,7 @@ class _AnimatedBottomNavigationBarState
         leftCornerRadius: widget.leftCornerRadius ?? 0.0,
         rightCornerRadius: widget.rightCornerRadius ?? 0.0,
       ),
-      geometry: geometryListenable,
+      // geometry: geometryListenable,
       notchMargin: widget.notchMargin ?? 8,
     );
 
@@ -423,7 +423,7 @@ class _AnimatedBottomNavigationBarState
     final gapItemWidth = widget.notchAndCornersAnimation != null
         ? gapWidth * widget.notchAndCornersAnimation!.value
         : gapWidth;
-    final itemCount = widget.itemCount ?? widget.icons!.length;
+    final itemCount = widget.itemCount ?? widget.tabs!.length;
 
     final items = <Widget>[];
     for (var i = 0; i < itemCount; i++) {
@@ -442,10 +442,12 @@ class _AnimatedBottomNavigationBarState
           activeColor: widget.activeColor,
           inactiveColor: widget.inactiveColor,
           child: widget.tabBuilder?.call(i, isActive),
-          iconData: widget.icons?.elementAt(i),
           iconScale: _iconScale,
           iconSize: widget.iconSize,
           onTap: () => widget.onTap(i),
+          icon: widget.tabs?.elementAt(i).icon,
+          iconSelected: widget.tabs?.elementAt(i).selectedIcon,
+          label: widget.tabs?.elementAt(i).label,
         ),
       );
 

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class TabItem extends StatelessWidget {
-  final IconData? iconData;
+  final Widget? icon;
+  final Widget? iconSelected;
+  final Widget? label;
   final double? iconSize;
   final bool isActive;
   final Color? activeColor;
@@ -11,7 +13,9 @@ class TabItem extends StatelessWidget {
   const TabItem({
     Key? key,
     required this.isActive,
-    this.iconData,
+    this.icon,
+    this.iconSelected,
+    this.label,
     this.iconSize = 24,
     this.activeColor = Colors.deepPurpleAccent,
     this.inactiveColor = Colors.black,
@@ -22,10 +26,6 @@ class TabItem extends StatelessWidget {
   Widget build(BuildContext context) => child ?? _buildDefaultTab();
 
   Widget _buildDefaultTab() {
-    return Icon(
-      iconData,
-      color: isActive ? activeColor : inactiveColor,
-      size: iconSize,
-    );
+    return isActive ? iconSelected! : icon!;
   }
 }

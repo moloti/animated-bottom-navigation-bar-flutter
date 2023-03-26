@@ -9,7 +9,9 @@ class NavigationBarItem extends StatelessWidget {
   final Color? bubbleColor;
   final Color? activeColor;
   final Color? inactiveColor;
-  final IconData? iconData;
+  final Widget? icon;
+  final Widget? iconSelected;
+  final Widget? label;
   final double iconScale;
   final double? iconSize;
   final VoidCallback onTap;
@@ -22,11 +24,15 @@ class NavigationBarItem extends StatelessWidget {
     required this.bubbleColor,
     required this.activeColor,
     required this.inactiveColor,
-    required this.iconData,
+    required this.icon,
     required this.iconScale,
     required this.iconSize,
     required this.onTap,
+    required this.iconSelected,
+    required this.label,
     this.child,
+
+
   });
 
   @override
@@ -43,8 +49,10 @@ class NavigationBarItem extends StatelessWidget {
             child: Transform.scale(
               scale: isActive ? iconScale : 1,
               child: TabItem(
+                icon: icon,
+                iconSelected: iconSelected,
+                label: label,
                 isActive: isActive,
-                iconData: iconData,
                 iconSize: iconSize,
                 activeColor: activeColor,
                 inactiveColor: inactiveColor,
