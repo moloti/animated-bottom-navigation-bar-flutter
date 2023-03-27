@@ -14,11 +14,17 @@ class CircularNotchedAndCorneredRectangleClipper extends CustomClipper<Path> {
 
   @override
   Path getClip(Size size) {
-    final Rect? button = geometry.value.floatingActionButtonArea?.translate(
-      0.0,
-      geometry.value.bottomNavigationBarTop! * -1.0,
-    );
+    // final Rect? button = geometry.value.floatingActionButtonArea?.translate(
+    //   0.0,
+    //   geometry.value.bottomNavigationBarTop! * -1.0,
+    // );
+    // Create a rect of the size of a standard flutter floating action button
 
+    final Rect? button = Rect.fromCircle(
+      center: Offset(size.width / 2, size.height / 2),
+      radius: 28,
+    );
+    CircularNotchedRectangle().getOuterPath(Offset.zero & size, button?.inflate(notchMargin));
     return shape.getOuterPath(Offset.zero & size, button?.inflate(notchMargin));
   }
 
