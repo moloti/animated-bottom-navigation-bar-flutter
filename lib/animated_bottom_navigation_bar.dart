@@ -363,25 +363,26 @@ class _AnimatedBottomNavigationBarState
         geometry: Scaffold.geometryOf(context),
         notchMargin: widget.notchMargin ?? 8,
       );
-
-      return PhysicalShape(
-        elevation: widget.elevation ?? 8,
-        color: Colors.transparent,
-        clipper: clipper,
-        child: AroundCustomPainter(
+      Future.delayed(Duration(milliseconds: 1000), () {
+        return PhysicalShape(
+          elevation: widget.elevation ?? 8,
+          color: Colors.transparent,
           clipper: clipper,
-          shadow: widget.shadow,
-          borderColor: widget.borderColor ?? Colors.transparent,
-          borderWidth: widget.borderWidth ?? 2,
-          child: widget.hideAnimationController != null
-              ? VisibleAnimator(
-                  showController: widget.hideAnimationController!,
-                  curve: widget.hideAnimationCurve ?? Curves.fastOutSlowIn,
-                  child: _buildBottomBar(),
-                )
-              : _buildBottomBar(),
-        ),
-      );
+          child: AroundCustomPainter(
+            clipper: clipper,
+            shadow: widget.shadow,
+            borderColor: widget.borderColor ?? Colors.transparent,
+            borderWidth: widget.borderWidth ?? 2,
+            child: widget.hideAnimationController != null
+                ? VisibleAnimator(
+                    showController: widget.hideAnimationController!,
+                    curve: widget.hideAnimationCurve ?? Curves.fastOutSlowIn,
+                    child: _buildBottomBar(),
+                  )
+                : _buildBottomBar(),
+          ),
+        );
+      });
     });
   }
 
