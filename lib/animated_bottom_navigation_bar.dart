@@ -350,36 +350,39 @@ class _AnimatedBottomNavigationBarState
 
   @override
   Widget build(BuildContext context) {
-    final clipper = CircularNotchedAndCorneredRectangleClipper(
-      shape: CircularNotchedAndCorneredRectangle(
-        animation: widget.notchAndCornersAnimation,
-        notchSmoothness: widget.notchSmoothness ?? NotchSmoothness.defaultEdge,
-        gapLocation: widget.gapLocation ?? GapLocation.end,
-        leftCornerRadius: widget.leftCornerRadius ?? 0.0,
-        rightCornerRadius: widget.rightCornerRadius ?? 0.0,
-      ),
-      geometry: geometryListenable,
-      notchMargin: widget.notchMargin ?? 8,
-    );
+    return LayoutBuilder(builder: (context, layoutConstraints) {
+      final clipper = CircularNotchedAndCorneredRectangleClipper(
+        shape: CircularNotchedAndCorneredRectangle(
+          animation: widget.notchAndCornersAnimation,
+          notchSmoothness:
+              widget.notchSmoothness ?? NotchSmoothness.defaultEdge,
+          gapLocation: widget.gapLocation ?? GapLocation.end,
+          leftCornerRadius: widget.leftCornerRadius ?? 0.0,
+          rightCornerRadius: widget.rightCornerRadius ?? 0.0,
+        ),
+        geometry: Scaffold.geometryOf(context),
+        notchMargin: widget.notchMargin ?? 8,
+      );
 
-    return PhysicalShape(
-      elevation: widget.elevation ?? 8,
-      color: Colors.transparent,
-      clipper: clipper,
-      child: AroundCustomPainter(
+      return PhysicalShape(
+        elevation: widget.elevation ?? 8,
+        color: Colors.transparent,
         clipper: clipper,
-        shadow: widget.shadow,
-        borderColor: widget.borderColor ?? Colors.transparent,
-        borderWidth: widget.borderWidth ?? 2,
-        child: widget.hideAnimationController != null
-            ? VisibleAnimator(
-                showController: widget.hideAnimationController!,
-                curve: widget.hideAnimationCurve ?? Curves.fastOutSlowIn,
-                child: _buildBottomBar(),
-              )
-            : _buildBottomBar(),
-      ),
-    );
+        child: AroundCustomPainter(
+          clipper: clipper,
+          shadow: widget.shadow,
+          borderColor: widget.borderColor ?? Colors.transparent,
+          borderWidth: widget.borderWidth ?? 2,
+          child: widget.hideAnimationController != null
+              ? VisibleAnimator(
+                  showController: widget.hideAnimationController!,
+                  curve: widget.hideAnimationCurve ?? Curves.fastOutSlowIn,
+                  child: _buildBottomBar(),
+                )
+              : _buildBottomBar(),
+        ),
+      );
+    });
   }
 
   Widget _buildBottomBar() {
